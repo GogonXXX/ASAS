@@ -590,6 +590,12 @@ function showLatihan() {
   document.getElementById("latihanMenu").style.display = "block";
 }
 
+    function exportJawaban() {
+      const namaSiswa = document.getElementById("namaSiswa").value.trim() || "Anonim";
+      const data = { nama: namaSiswa, jawaban: answers, tanggal: new Date().toLocaleString('id-ID'), soal: questions };
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+      const a = document.createElement('a'); a.href = dataStr; a.download = "jawaban_" + namaSiswa + ".json"; a.click();
+    }
 // === LOAD SOAL LATIHAN DARI FILE JSON ===
 function loadLatihan(fileName) {
   fetch(fileName)
@@ -621,14 +627,6 @@ function loadLatihan(fileName) {
       console.error(err);
     });
 }
-
-    function exportJawaban() {
-      const namaSiswa = document.getElementById("namaSiswa").value.trim() || "Anonim";
-      const data = { nama: namaSiswa, jawaban: answers, tanggal: new Date().toLocaleString('id-ID'), soal: questions };
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
-      const a = document.createElement('a'); a.href = dataStr; a.download = "jawaban_" + namaSiswa + ".json"; a.click();
-    }
-
     // Inisialisasi
     render();
   </script>
