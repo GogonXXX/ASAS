@@ -574,19 +574,50 @@ document.getElementById('panel').innerHTML = panel;
 // === MENU LATIHAN ===
 function showLatihan() {
   const menu = `
-    <h2>📚 PILIH LATIHAN</h2>
-    <p>Pilih file latihan yang ingin dikerjakan:</p>
+    <h2>📚 PILIH MATA PELAJARAN</h2>
 
-    <button onclick="loadLatihan('MTK Pg.json')">Latihan Pecahan & Rasio</button>
-    <br><br>
-
-    <!-- Anda bisa menambah latihan lain -->
-    <!-- <button onclick="loadLatihan('IPA.json')">Latihan IPA</button> -->
-    <!-- <button onclick="loadLatihan('BahasaIndo.json')">Bahasa Indonesia</button> -->
+    <button onclick="showMapel('mtk')">📐 Matematika</button><br><br>
+    <button onclick="showMapel('ipa')">🔬 IPA</button><br><br>
+    <button onclick="showMapel('bindo')">📘 Bahasa Indonesia</button><br><br>
+    <button onclick="showMapel('ppkn')">🇮🇩 PPKN</button>
   `;
 
   document.getElementById("latihanMenu").innerHTML = menu;
   document.getElementById("latihanMenu").style.display = "block";
+}
+function showMapel(mapel) {
+  let menu = `<h2>📚 PILIH LATIHAN</h2>`;
+
+  if (mapel === 'mtk') {
+    menu += `
+      <button onclick="loadLatihan('MTK_Pg.json')">Latihan Pecahan</button><br><br>
+      <button onclick="loadLatihan('MTK_Bangun.json')">Latihan Bangun Datar</button><br><br>
+      <button onclick="loadLatihan('MTK_Perbandingan.json')">Latihan Perbandingan</button>
+    `;
+  }
+
+  if (mapel === 'ipa') {
+    menu += `
+      <button onclick="loadLatihan('IPA_Energi.json')">Energi</button><br><br>
+      <button onclick="loadLatihan('IPA_Makhluk.json')">Makhluk Hidup</button>
+    `;
+  }
+
+  if (mapel === 'bindo') {
+    menu += `
+      <button onclick="loadLatihan('BINDO_Teks.json')">Teks Pendek</button><br><br>
+      <button onclick="loadLatihan('BINDO_Makna.json')">Makna Kata</button>
+    `;
+  }
+
+  if (mapel === 'ppkn') {
+    menu += `
+      <button onclick="loadLatihan('PPKN_Pancasila.json')">Pancasila</button><br><br>
+      <button onclick="loadLatihan('PPKN_Kerjasama.json')">Kerja Sama</button>
+    `;
+  }
+
+  document.getElementById("latihanMenu").innerHTML = menu;
 }
 
     function exportJawaban() {
@@ -598,34 +629,24 @@ function showLatihan() {
 // === LOAD SOAL LATIHAN DARI FILE JSON ===
 function loadLatihan(fileName) {
   fetch(fileName)
-    .then(response => response.json())
+    .then(res => res.json())
     .then(json => {
-      if (json.soal) {
-        questions = json.soal;
-      } else if (Array.isArray(json)) {
-        questions = json;
-      } else {
-        alert("❌ Format JSON tidak dikenali!");
-        return;
-      }
+      questions = json.soal || json;
 
-      // reset
       answers = {};
       marked = {};
       started = false;
       finished = false;
       current = 0;
 
-      alert(`✅ Latihan "${fileName}" berhasil dimuat (${questions.length} soal). Klik "Mulai Tes" untuk mulai.`);
-
       document.getElementById("latihanMenu").style.display = "none";
+
+      alert(`Latihan ${fileName} siap! Klik MULAI TES.`);
       render();
     })
-    .catch(err => {
-      alert("❌ Gagal memuat file: " + fileName);
-      console.error(err);
-    });
+    .catch(err => alert("File tidak ditemukan: " + fileName));
 }
+
     // Inisialisasi
     render();
   </script>
